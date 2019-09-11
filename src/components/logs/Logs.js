@@ -1,27 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux'; // 1 of how to bring and use or connect Redux in a component
 import LogItem from './LogItem';
 import Preloader from '../layout/Preloader';
+import PropTypes from 'prop-types';
+import { getLogs } from '../../actions/logAction'; // 4 bring action if you have one to fire of
 
-const Logs = () => {
-  const [logs, setLogs] = useState([]);
-  const [loading, setLoading] = useState(false);
+const Logs = ({ log: { logs, loading }, getLogs }) => {
+  // 6 get state and action now in props, here we destructure log from props and only logs and loading from log
 
   useEffect(() => {
     getLogs();
     // eslint-disable-next-line
   }, []);
 
-  const getLogs = async () => {
-    setLoading(true);
-
-    const res = await fetch('/logs');
-    const data = await res.json();
-    setLogs(data);
-
-    setLoading(false);
-  };
-
-  if (loading) {
+  if (loading || logs === null) {
     return <Preloader />;
   }
 
@@ -39,4 +31,17 @@ const Logs = () => {
   );
 };
 
-export default Logs;
+Logs.prototypes = {
+  log: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  // 3 anything you whant from state
+  log: state.log // log is the name of the prop and state.log comme from the root reducer (the name in root reducer is log too so we put state.log)
+});
+
+// 2
+export default connect(
+  mapStateToProps,
+  { getLogs } // 5 add the action if you have one as a second parameter
+)(Logs);
