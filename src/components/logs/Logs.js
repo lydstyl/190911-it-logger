@@ -3,7 +3,7 @@ import { connect } from 'react-redux'; // 1 of how to bring and use or connect R
 import LogItem from './LogItem';
 import Preloader from '../layout/Preloader';
 import PropTypes from 'prop-types';
-import { getLogs } from '../../actions/logAction'; // 4 bring action if you have one to fire of
+import { getLogs } from '../../actions/logActions'; // 4 bring action if you have one to fire of
 
 const Logs = ({ log: { logs, loading }, getLogs }) => {
   // 6 get state and action now in props, here we destructure log from props and only logs and loading from log
